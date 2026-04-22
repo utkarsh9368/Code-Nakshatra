@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CodeNakshatra — DSA Visualizer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@300;400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<!-- ── NOISE OVERLAY ── -->
+<div class="noise"></div>
+
+<!-- ── HEADER ── -->
+<header class="header">
+  <div class="logo">
+    <span class="logo-icon">◈</span>
+    <span class="logo-text">DSA<em>visualizer</em></span>
+    <span class="logo-tag">DSA Engine v1.0</span>
+  </div>
+  <nav class="nav">
+    <button class="nav-btn active" data-section="visualizer">Visualizer</button>
+    <button class="nav-btn" data-section="complexity">Complexity</button>
+    <button class="nav-btn" data-section="about">About</button>
+  </nav>
+  <div class="header-badge">
+    <span class="dot"></span>
+    C++ Engine Live
+  </div>
+</header>
+
+<!-- ── MAIN ── -->
+<main class="main">
+
+  <!-- ── SECTION: VISUALIZER ── -->
+  <section class="section active" id="section-visualizer">
+
+    <!-- LEFT PANEL: Controls -->
+    <aside class="panel panel-left">
+      <div class="panel-title">
+        <span>⚙</span> Configure
+      </div>
+
+      <!-- Category Tabs -->
+      <div class="tabs">
+        <button class="tab active" data-cat="sorting">Sorting</button>
+        <button class="tab" data-cat="searching">Searching</button>
+        <button class="tab" data-cat="linkedlist">Linked List</button>
+        <button class="tab" data-cat="stack">Stack</button>
+      </div>
+
+      <!-- SORTING controls -->
+      <div class="controls-block active" id="ctrl-sorting">
+        <label class="ctrl-label">Algorithm</label>
+        <div class="algo-grid">
+          <button class="algo-btn active" data-algo="bubble">Bubble</button>
+          <button class="algo-btn" data-algo="selection">Selection</button>
+          <button class="algo-btn" data-algo="insertion">Insertion</button>
+          <button class="algo-btn" data-algo="merge">Merge</button>
+          <button class="algo-btn" data-algo="quick">Quick</button>
+        </div>
+        <label class="ctrl-label">Array Input</label>
+        <textarea class="input-field" id="sort-input" rows="2" placeholder="e.g. 5, 3, 8, 1, 9, 2 (2–20 integers)">64, 25, 12, 22, 11</textarea>
+        <div class="inline-btns">
+          <button class="mini-btn" id="sort-random">🎲 Random</button>
+          <button class="mini-btn" id="sort-nearly">↗ Nearly Sorted</button>
+          <button class="mini-btn" id="sort-reverse">↓ Reversed</button>
+        </div>
+        <label class="ctrl-label">Animation Speed</label>
+        <input type="range" class="speed-slider" id="speed-slider" min="100" max="1500" value="700" />
+        <div class="speed-labels"><span>Fast</span><span>Slow</span></div>
+        <button class="run-btn" id="run-sort">▶ Visualize Sort</button>
+      </div>
+
+      <!-- SEARCHING controls -->
+      <div class="controls-block" id="ctrl-searching">
+        <label class="ctrl-label">Algorithm</label>
+        <div class="algo-grid">
+          <button class="algo-btn active" data-algo="binary_search">Binary Search</button>
+        </div>
+        <label class="ctrl-label">Array (will be sorted)</label>
+        <textarea class="input-field" id="search-input" rows="2" placeholder="e.g. 1, 3, 5, 7, 9">2, 5, 8, 12, 16, 23, 38, 56, 72, 91</textarea>
+        <label class="ctrl-label">Search Target</label>
+        <input type="number" class="input-field small" id="search-target" value="23" placeholder="Target value" />
+        <button class="run-btn" id="run-search">▶ Visualize Search</button>
+      </div>
+
+      <!-- LINKED LIST controls -->
+      <div class="controls-block" id="ctrl-linkedlist">
+        <label class="ctrl-label">Operation</label>
+        <div class="algo-grid">
+          <button class="algo-btn active" data-op="reverse">Reverse</button>
+          <button class="algo-btn" data-op="search">Search</button>
+          <button class="algo-btn" data-op="insert_head">Insert Head</button>
+          <button class="algo-btn" data-op="insert_tail">Insert Tail</button>
+          <button class="algo-btn" data-op="delete_head">Delete Head</button>
+        </div>
+        <label class="ctrl-label">Nodes</label>
+        <textarea class="input-field" id="ll-input" rows="2" placeholder="e.g. 1, 2, 3, 4, 5">10, 20, 30, 40, 50</textarea>
+        <label class="ctrl-label">Value (for insert/search)</label>
+        <input type="number" class="input-field small" id="ll-value" value="99" />
+        <button class="run-btn" id="run-ll">▶ Visualize List</button>
+      </div>
+
+      <!-- STACK controls -->
+      <div class="controls-block" id="ctrl-stack">
+        <label class="ctrl-label">Operations (one per line)</label>
+        <textarea class="input-field" id="stack-ops" rows="6" placeholder="push:5&#10;push:3&#10;peek&#10;push:8&#10;pop&#10;pop">push:5
+push:3
+peek
+push:8
+pop
+pop</textarea>
+        <p class="hint-text">Valid ops: <code>push:N</code>, <code>pop</code>, <code>peek</code></p>
+        <button class="run-btn" id="run-stack">▶ Visualize Stack</button>
+      </div>
+    </aside>
+
+    <!-- RIGHT PANEL: Visualization -->
+    <div class="panel panel-right">
+
+      <!-- Stats Bar -->
+      <div class="stats-bar" id="stats-bar">
+        <div class="stat-item">
+          <span class="stat-label">Algorithm</span>
+          <span class="stat-val" id="stat-algo">—</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">Steps</span>
+          <span class="stat-val" id="stat-steps">—</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">Comparisons</span>
+          <span class="stat-val" id="stat-cmp">—</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">Swaps</span>
+          <span class="stat-val" id="stat-swaps">—</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">Time</span>
+          <span class="stat-val" id="stat-time">—</span>
+        </div>
+      </div>
+
+      <!-- Visualization Canvas -->
+      <div class="viz-area" id="viz-area">
+        <div class="viz-placeholder">
+          <div class="placeholder-icon">◈</div>
+          <p>Select an algorithm and click <strong>Visualize</strong></p>
+          <p class="sub">Powered by a C++ engine — real O(n) execution, step-by-step traces</p>
+        </div>
+      </div>
+
+      <!-- Description Bar -->
+      <div class="desc-bar" id="desc-bar">
+        <span class="desc-step" id="desc-step">Step 0</span>
+        <span class="desc-text" id="desc-text">Waiting…</span>
+        <span class="desc-pseudo" id="desc-pseudo"></span>
+      </div>
+
+      <!-- Playback Controls -->
+      <div class="playback" id="playback">
+        <button class="pb-btn" id="pb-first" title="First">⏮</button>
+        <button class="pb-btn" id="pb-prev" title="Previous">◀</button>
+        <button class="pb-btn pb-play" id="pb-play" title="Play/Pause">▶</button>
+        <button class="pb-btn" id="pb-next" title="Next">▶</button>
+        <button class="pb-btn" id="pb-last" title="Last">⏭</button>
+        <div class="pb-progress">
+          <div class="pb-track">
+            <div class="pb-fill" id="pb-fill"></div>
+          </div>
+          <span id="pb-counter">0 / 0</span>
+        </div>
+      </div>
+
+      <!-- Complexity Card -->
+      <div class="complexity-card" id="complexity-card" style="display:none">
+        <div class="cx-row"><span class="cx-label">Best</span><span class="cx-val" id="cx-best">—</span></div>
+        <div class="cx-row"><span class="cx-label">Average</span><span class="cx-val" id="cx-avg">—</span></div>
+        <div class="cx-row"><span class="cx-label">Worst</span><span class="cx-val" id="cx-worst">—</span></div>
+        <div class="cx-row"><span class="cx-label">Space</span><span class="cx-val" id="cx-space">—</span></div>
+      </div>
+
+      <!-- Pseudo Code Viewer -->
+      <div class="pseudo-panel" id="pseudo-panel" style="display:none">
+        <div class="pseudo-title">Pseudocode</div>
+        <pre class="pseudo-code" id="pseudo-code"></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SECTION: COMPLEXITY TABLE ── -->
+  <section class="section" id="section-complexity">
+    <div class="complexity-page">
+      <h2 class="page-title">Time & Space Complexity</h2>
+      <p class="page-sub">Big-O reference for all implemented algorithms</p>
+      <div class="cx-table-wrap">
+        <table class="cx-table">
+          <thead>
+            <tr>
+              <th>Algorithm</th>
+              <th>Best</th>
+              <th>Average</th>
+              <th>Worst</th>
+              <th>Space</th>
+              <th>Stable</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Bubble Sort</td><td class="green">O(n)</td><td class="yellow">O(n²)</td><td class="red">O(n²)</td><td class="green">O(1)</td><td>✅</td></tr>
+            <tr><td>Selection Sort</td><td class="yellow">O(n²)</td><td class="yellow">O(n²)</td><td class="red">O(n²)</td><td class="green">O(1)</td><td>❌</td></tr>
+            <tr><td>Insertion Sort</td><td class="green">O(n)</td><td class="yellow">O(n²)</td><td class="red">O(n²)</td><td class="green">O(1)</td><td>✅</td></tr>
+            <tr><td>Merge Sort</td><td class="green">O(n log n)</td><td class="green">O(n log n)</td><td class="green">O(n log n)</td><td class="yellow">O(n)</td><td>✅</td></tr>
+            <tr><td>Quick Sort</td><td class="green">O(n log n)</td><td class="green">O(n log n)</td><td class="red">O(n²)</td><td class="green">O(log n)</td><td>❌</td></tr>
+            <tr><td>Binary Search</td><td class="green">O(1)</td><td class="green">O(log n)</td><td class="green">O(log n)</td><td class="green">O(1)</td><td>✅</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="cx-cards">
+        <div class="cx-info-card">
+          <div class="cx-info-icon">🟢</div>
+          <h3>Efficient</h3>
+          <p>O(n log n) or better — scales well for large inputs</p>
+        </div>
+        <div class="cx-info-card">
+          <div class="cx-info-icon">🟡</div>
+          <h3>Moderate</h3>
+          <p>O(n²) — acceptable for small datasets only</p>
+        </div>
+        <div class="cx-info-card">
+          <div class="cx-info-icon">🔴</div>
+          <h3>Worst Case</h3>
+          <p>Always consider worst-case when choosing an algorithm</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SECTION: ABOUT ── -->
+  <section class="section" id="section-about">
+    <div class="about-page">
+      <div class="about-hero">
+        <div class="about-glyph">◈</div>
+        <h1>CodeNakshatra</h1>
+        <p class="about-sub">DSA Visualizer — Built by Utkarsh Gupta</p>
+      </div>
+      <div class="about-grid">
+        <div class="about-card">
+          <h3>⚙ C++ Engine</h3>
+          <p>Every sort and search runs through a real C++ binary compiled with <code>g++ -O2 -std=c++17</code>. The engine records each comparison, swap and pointer movement as a JSON trace — no JavaScript simulation.</p>
+        </div>
+        <div class="about-card">
+          <h3>🎞 Step-by-step Traces</h3>
+          <p>The visualizer replays the C++ execution trace one step at a time, showing exactly which elements are compared or swapped with real O(n) counter data.</p>
+        </div>
+        <div class="about-card">
+          <h3>📚 Algorithms Covered</h3>
+          <p>Bubble · Selection · Insertion · Merge · Quick · Binary Search · Linked List operations · Stack operations. Each with pseudocode overlay and complexity cards.</p>
+        </div>
+        <div class="about-card">
+          <h3>🛠 Tech Stack</h3>
+          <p><strong>Backend:</strong> C++ (g++ -O2), Node.js, Express<br/><strong>Frontend:</strong> Vanilla JS, HTML5 Canvas, CSS3 Animations<br/><strong>Author:</strong> ABES Engineering College, 2025</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script src="js/app.js"></script>
+</body>
+</html>

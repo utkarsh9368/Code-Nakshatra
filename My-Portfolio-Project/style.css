@@ -115,6 +115,7 @@ section{position:relative;z-index:1}
   display:block;
   background:linear-gradient(135deg,var(--text) 0%,var(--accent) 60%);
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;color:transparent;
 }
 .hero-sub{
   font-size:1.1rem;color:var(--muted);
